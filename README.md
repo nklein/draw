@@ -10,17 +10,16 @@ into one interface where I can swap out the back-end to generate the type of fil
 at a given time.
 
 To render the Sudoku diagrams as PDFs, I used these functions from `CL-PDF`:
+`bounds`, `circle`, `close-and-fill`,
+`close-and-stroke`, `close-fill-and-stroke`, `draw-text`,
+`get-char-size`, `get-font`, `get-font-descender`,
+`get-kerning`, `in-text-mode`, `line-to`,
+`move-text`, `move-to`, `rectangle`,
+`set-font`, `set-line-width`, `set-rgb-fill`,
+`set-rgb-stroke`, `translate`, `with-document`,
+`with-page`, `with-saved-state`, `write-document`
 
-| `bounds` | `circle` | `close-and-fill` |
-| `close-and-stroke` | `close-fill-and-stroke` | `draw-text` |
-| `get-char-size` | `get-font` | `get-font-descender` |
-| `get-kerning` | `in-text-mode` | `line-to` |
-| `move-text` | `move-to` | `rectangle` |
-| `set-font` | `set-line-width` | `set-rgb-fill` |
-| `set-rgb-stroke` | `translate` | `with-document` |
-| `with-page` | `with-saved-state` | `write-document` |
-
-With the exception of the `with-page` macro, this all seem very do-able
+With the exception of the `with-page` macro, these all seem very do-able
 with `Vecto` (with some help from `ZPB-TTF`).
 These are probably all very do-able in `CL-SVG`, as well, (though maybe not
 with the font queries).
