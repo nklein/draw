@@ -28,8 +28,8 @@ At the moment, I am torn about making this an almost drop-in replacement
 Some of the names above though are awkward for something generic.
 Calling `write-document` for `Vecto` seems a bit odd.
 
-Below is a test image as rendered by the `Vecto` back-end.
-You can download the same image [rendered by the `CL-PDF`](./images/draw-test.pdf).
+Below is a test image as rendered by the `Vecto` backend.
+You can download the same image [rendered by the `CL-PDF` backend](./images/draw-test.pdf).
 
 ![sample image from Vecto](./images/draw-test.png)
 
@@ -52,13 +52,21 @@ BACKEND STATUS
 | `move-text`             |       |       |       |
 | `move-to`               | ✓     | ✓     |       |
 | `rectangle`             | ✓     | ✓     |       |
+| `rotate`                | ✓     | ✓     |       |
+| `scale`                 | ✓     | ✓     |       |
 | `set-font`              |       |       |       |
 | `set-line-width`        | ✓     | ✓     |       |
 | `set-rgb-fill`          | ✓     | ✓     |       |
 | `set-rgb-stroke`        | ✓     | ✓     |       |
-| `translate`             |       |       |       |
+| `translate`             | ✓     | ✓     |       |
 | `with-saved-state`      | ✓     | ✓     |       |
-| `write-document`        |       |       |       |
+| `write-document`        | †     |       |       |
+
+† And, it turns out that without the `with-page` macro, there isn't
+a really useful way to implement `write-document` at a time when
+`CL-PDF` has written the page to the document but before it has
+discarded the document. So, I will have to think on that.
+
 
 
 PDF BACKEND

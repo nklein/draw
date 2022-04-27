@@ -8,6 +8,10 @@
            :%set-rgb-stroke
            :%set-rgb-fill)
 
+  (:export :%translate
+           :%rotate
+           :%scale)
+
   (:export :%move-to
            :%line-to
            :%rectangle

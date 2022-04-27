@@ -14,22 +14,29 @@
   (draw:set-line-width 1)
 
   (draw:with-saved-state
-    (draw:move-to 10 10)
-    (draw:line-to 10 40)
-    (draw:line-to 30 40)
-    (draw:close-and-stroke))
+    (draw:translate -40 40)
+    (draw:rotate -85)
+    (draw:scale 0.75 1.25)
+    (draw:translate 0 35)
 
-  (draw:with-saved-state
-    (draw:move-to 15 10)
-    (draw:line-to 35 10)
-    (draw:line-to 35 40)
-    (draw:close-and-fill))
+    (draw:with-saved-state
+      (draw:move-to 10 10)
+      (draw:line-to 10 40)
+      (draw:line-to 30 40)
+      (draw:close-and-stroke))
 
-  (draw:with-saved-state
-    (draw:move-to 40 10)
-    (draw:line-to 40 40)
-    (draw:line-to 60 40)
-    (draw:close-fill-and-stroke))
+    (draw:with-saved-state
+      (draw:move-to 15 10)
+      (draw:line-to 35 10)
+      (draw:line-to 35 40)
+      (draw:close-and-fill))
+
+    (draw:translate 28 0)
+    (draw:with-saved-state
+      (draw:move-to 10 10)
+      (draw:line-to 10 40)
+      (draw:line-to 30 40)
+      (draw:close-fill-and-stroke)))
 
   (draw:with-saved-state
     (draw:set-rgb-fill 0.6 0.8 0.9)
@@ -40,7 +47,9 @@
 
   (draw:with-saved-state
     (draw:rectangle 10 50 50 30)
-    (draw:rectangle 70 50 50 30 :radius 5)
+    (draw:close-fill-and-stroke)
+    (draw:translate 60 0)
+    (draw:rectangle 10 50 50 30 :radius 5)
     (draw:close-fill-and-stroke)))
 
 (defun test-pdf (output-filename width height)

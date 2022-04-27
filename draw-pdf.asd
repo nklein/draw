@@ -15,6 +15,8 @@
                  (:file "renderer" :depends-on ("package"))
                  (:file "style" :depends-on ("package"
                                              "renderer"))
+                 (:file "transform" :depends-on ("package"
+                                                 "renderer"))
                  (:file "paths" :depends-on ("package"
                                              "renderer"))
                  (:file "state" :depends-on ("package"
