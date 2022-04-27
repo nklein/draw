@@ -13,6 +13,8 @@
    (:module "src/pdf"
     :components ((:file "package")
                  (:file "renderer" :depends-on ("package"))
+                 (:file "style" :depends-on ("package"
+                                             "renderer"))
                  (:file "paths" :depends-on ("package"
                                              "renderer"))
                  (:file "state" :depends-on ("package"

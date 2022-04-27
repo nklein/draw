@@ -1,6 +1,10 @@
 (defpackage #:draw
   (:use :cl :draw-backend)
 
+  (:export :set-line-width
+           :set-rgb-stroke
+           :set-rgb-fill)
+
   (:export :move-to
            :line-to
            :rectangle

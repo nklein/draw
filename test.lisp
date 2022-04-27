@@ -9,9 +9,9 @@
 
 (defun test ()
 
-  (pdf:set-rgb-fill 0.6 0.9 0.6)
-  (pdf:set-rgb-stroke 0.9 0.6 0.6)
-  (pdf:set-line-width 1)
+  (draw:set-rgb-fill 0.6 0.9 0.6)
+  (draw:set-rgb-stroke 0.9 0.6 0.6)
+  (draw:set-line-width 1)
 
   (draw:with-saved-state
     (draw:move-to 10 10)
@@ -32,9 +32,9 @@
     (draw:close-fill-and-stroke))
 
   (draw:with-saved-state
-    (pdf:set-rgb-fill 0.6 0.8 0.9)
-    (pdf:set-rgb-stroke 0.4 0.1 0.1)
-    (pdf:set-line-width 3)
+    (draw:set-rgb-fill 0.6 0.8 0.9)
+    (draw:set-rgb-stroke 0.4 0.1 0.1)
+    (draw:set-line-width 3)
     (draw:circle 80 20 10)
     (draw:close-fill-and-stroke))
 
