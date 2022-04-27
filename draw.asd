@@ -11,5 +11,6 @@
    (:static-file "UNLICENSE.txt")
    (:module "src/base"
     :components ((:file "package")
+                 (:file "style" :depends-on ("package"))
                  (:file "paths" :depends-on ("package"))
                  (:file "state" :depends-on ("package"))))))

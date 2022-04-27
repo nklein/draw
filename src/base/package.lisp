@@ -8,4 +8,6 @@
            :circle
            :close-and-fill
            :close-and-stroke
-           :close-fill-and-stroke))
+           :close-fill-and-stroke)
+
+  (:export :with-saved-state))

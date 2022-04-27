@@ -14,6 +14,8 @@
                  (:file "point-stack" :depends-on ("package"))
                  (:file "renderer" :depends-on ("package"
                                                 "point-stack"))
+                 (:file "style" :depends-on ("package"
+                                             "renderer"))
                  (:file "paths" :depends-on ("package"
                                              "renderer"))
                  (:file "state" :depends-on ("package"

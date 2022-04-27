@@ -48,9 +48,9 @@ BACKEND STATUS
 | `move-to`               | ✓     |       |       |
 | `rectangle`             | ✓     |       |       |
 | `set-font`              |       |       |       |
-| `set-line-width`        |       |       |       |
-| `set-rgb-fill`          |       |       |       |
-| `set-rgb-stroke`        |       |       |       |
+| `set-line-width`        | ✓     |       |       |
+| `set-rgb-fill`          | ✓     |       |       |
+| `set-rgb-stroke`        | ✓     |       |       |
 | `translate`             |       |       |       |
 | `with-saved-state`      | ✓     |       |       |
 | `write-document`        |       |       |       |

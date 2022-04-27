@@ -4,6 +4,10 @@
   (:export :renderer
            :with-renderer)
 
+  (:export :%set-line-width
+           :%set-rgb-stroke
+           :%set-rgb-fill)
+
   (:export :%move-to
            :%line-to
            :%rectangle
