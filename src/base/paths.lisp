@@ -23,6 +23,11 @@
   "Adds a circle to the path centered at (X,Y) and having the given RADIUS."
   (%circle (renderer) x y radius))
 
+(declaim (inline close-path))
+(defun close-path ()
+  "Closes the current subpath without yet coloring it."
+  (%close-path (renderer)))
+
 (declaim (inline close-and-fill))
 (defun close-and-fill ()
   "Closes the path and fills it using the current fill color."

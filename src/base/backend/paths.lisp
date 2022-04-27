@@ -24,6 +24,13 @@
 (defgeneric %circle (renderer x y radius)
   (:documentation "This adds a circle to the path centered at (X,Y) and having the given RADIUS."))
 
+(defgeneric %close-path (renderer)
+  (:method :around ((renderer renderer))
+           (unwind-protect
+                (call-next-method renderer)
+             (close-path renderer)))
+  (:documentation "This closes the current sub-path."))
+
 (defgeneric %close-and-fill (renderer)
   (:method :around ((renderer renderer))
            (unwind-protect

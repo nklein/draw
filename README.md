@@ -42,6 +42,7 @@ BACKEND STATUS
 | `close-and-fill`        | ✓     | ✓     |       |
 | `close-and-stroke`      | ✓     | ✓     |       |
 | `close-fill-and-stroke` | ✓     | ✓     |       |
+| `close-path`            | ✓     | ✓     |       |
 | `draw-text`             |       |       |       |
 | `get-char-size`         |       |       |       |
 | `get-font`              |       |       |       |

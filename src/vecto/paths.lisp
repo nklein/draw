@@ -15,6 +15,9 @@
 (defmethod %circle ((renderer vecto-renderer) x y radius)
   (vecto:centered-circle-path x y radius))
 
+(defmethod %close-path ((renderer vecto-renderer))
+  (vecto:close-subpath))
+
 (defmethod %close-and-fill ((renderer vecto-renderer))
   (vecto:close-subpath)
   (vecto:fill-path))

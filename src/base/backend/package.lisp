@@ -17,6 +17,7 @@
            :%rectangle
            :%rounded-rectangle
            :%circle
+           :%close-path
            :%close-and-fill
            :%close-and-stroke
            :%close-fill-and-stroke)

@@ -15,6 +15,9 @@
 (defmethod %circle ((renderer pdf-renderer) x y radius)
   (pdf:circle x y radius))
 
+(defmethod %close-path ((renderer pdf-renderer))
+  (pdf:close-path))
+
 (defmethod %close-and-fill ((renderer pdf-renderer))
   (pdf:close-and-fill))
 

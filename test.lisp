@@ -39,6 +39,21 @@
       (draw:close-fill-and-stroke)))
 
   (draw:with-saved-state
+    (draw:translate 95 25)
+
+    (draw:move-to 0 0)
+    (draw:line-to 10 0)
+    (draw:line-to 10 10)
+    (draw:close-path)
+
+    (draw:move-to 15 0)
+    (draw:line-to 15 10)
+    (draw:line-to 25 0)
+    (draw:close-path)
+
+    (draw:close-and-stroke))
+
+  (draw:with-saved-state
     (draw:set-rgb-fill 0.6 0.8 0.9)
     (draw:set-rgb-stroke 0.4 0.1 0.1)
     (draw:set-line-width 3)
