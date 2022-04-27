@@ -6,4 +6,5 @@
 
 (defmacro with-pdf-renderer (arg-list &body body)
   `(with-renderer () (make-instance 'pdf-renderer ,@arg-list)
-     ,@body))
+     (pdf:with-saved-state
+       ,@body)))

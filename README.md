@@ -28,31 +28,36 @@ At the moment, I am torn about making this an almost drop-in replacement
 Some of the names above though are awkward for something generic.
 Calling `write-document` for `Vecto` seems a bit odd.
 
+Below is a test image as rendered by the `Vecto` back-end.
+You can download the same image [rendered by the `CL-PDF`](./images/draw-test.pdf).
+
+![sample image from Vecto](./images/draw-test.png)
+
 BACKEND STATUS
 --------------
 
 | Method                  | PDF   | Vecto | SVG   |
 |-------------------------| :---: | :---: | :---: |
-| `circle`                | ✓     |       |       |
-| `close-and-fill`        | ✓     |       |       |
-| `close-and-stroke`      | ✓     |       |       |
-| `close-fill-and-stroke` | ✓     |       |       |
+| `circle`                | ✓     | ✓     |       |
+| `close-and-fill`        | ✓     | ✓     |       |
+| `close-and-stroke`      | ✓     | ✓     |       |
+| `close-fill-and-stroke` | ✓     | ✓     |       |
 | `draw-text`             |       |       |       |
 | `get-char-size`         |       |       |       |
 | `get-font`              |       |       |       |
 | `get-font-descender`    |       |       |       |
 | `get-kerning`           |       |       |       |
 | `in-text-mode`          |       |       |       |
-| `line-to`               | ✓     |       |       |
+| `line-to`               | ✓     | ✓     |       |
 | `move-text`             |       |       |       |
-| `move-to`               | ✓     |       |       |
-| `rectangle`             | ✓     |       |       |
+| `move-to`               | ✓     | ✓     |       |
+| `rectangle`             | ✓     | ✓     |       |
 | `set-font`              |       |       |       |
-| `set-line-width`        | ✓     |       |       |
-| `set-rgb-fill`          | ✓     |       |       |
-| `set-rgb-stroke`        | ✓     |       |       |
+| `set-line-width`        | ✓     | ✓     |       |
+| `set-rgb-fill`          | ✓     | ✓     |       |
+| `set-rgb-stroke`        | ✓     | ✓     |       |
 | `translate`             |       |       |       |
-| `with-saved-state`      | ✓     |       |       |
+| `with-saved-state`      | ✓     | ✓     |       |
 | `write-document`        |       |       |       |
 
 
@@ -68,9 +73,23 @@ One might use it like this, at the moment:
 
     (pdf:with-document ()
       (pdf:with-page (:bounds (vector 0 0 (* 4 72) (* 4 72)))
-        (pdf:set-rgb-fill 0.6 0.9 0.6)
-        (pdf:set-rgb-stroke 0.9 0.6 0.6)
-        (pdf:set-line-width 1)
         (draw-pdf:with-pdf-renderer ()
-        (test)))
+          (test)))
       (pdf:write-document output-filename))
+
+VECTO BACKEND
+-------------
+
+The `DRAW-VECTO` backend exports this macro:
+
+    (with-vecto-renderer (&key (dpi 300) &allow-other-keys)
+       ...)
+
+One might use it like this, at the moment:
+
+    (let* ((dpi 300)
+           (scale (/ dpi 72)))
+      (vecto:with-canvas (:width (round (* scale width)) :height (round (* scale height)))
+        (draw-vecto:with-vecto-renderer (:dpi dpi)
+          (test))
+        (vecto:save-png output-filename)))

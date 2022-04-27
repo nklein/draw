@@ -1,0 +1,21 @@
+(in-package #:draw-vecto)
+
+(defclass vecto-renderer ()
+  ()
+  (:documentation "The VECTO-RENDERER class implements DRAW functionality using VECTO"))
+
+(defmacro with-vecto-renderer ((&key (dpi 300)) &body body)
+  (declare (ignorable dpi))
+  (let ((dpi-var (gensym "DPI"))
+        (scale (gensym "SCALE")))
+    `(let ((,dpi-var ,dpi))
+       (assert (and (numberp ,dpi-var)
+                    (plusp ,dpi-var))
+               () "Must give the :DPI argument a number")
+       (let ((,scale (/ ,dpi-var 72)))
+         (with-renderer () (make-instance 'vecto-renderer)
+           (vecto:with-graphics-state
+             (vecto:set-rgb-fill 1.0 1.0 1.0)
+             (vecto:clear-canvas)
+             (vecto:scale ,scale ,scale)
+             ,@body))))))

@@ -4,7 +4,7 @@
      :collect asd))
 
 
-(ql:quickload '(:draw :draw-pdf :cl-pdf))
+(ql:quickload '(:draw :draw-pdf :draw-vecto :cl-pdf :vecto))
 
 
 (defun test ()
@@ -50,10 +50,19 @@
         (test)))
     (pdf:write-document output-filename)))
 
-(defun test-all (output-filename width height)
+(defun test-vecto (output-filename width height dpi)
+  (let ((scale (/ dpi 72)))
+    (vecto:with-canvas (:width (round (* scale width)) :height (round (* scale height)))
+      (draw-vecto:with-vecto-renderer (:dpi dpi)
+        (test))
+      (vecto:save-png output-filename))))
+
+(defun test-all (output-filename width height dpi)
   (flet ((file (ext)
            (merge-pathnames (make-pathname :type ext)
                             output-filename)))
-    (test-pdf (file "pdf") width height)))
+    (test-pdf (file "pdf") width height)
+    (test-vecto (file "png") width height dpi)))
 
-(test-all "/tmp/draw-test.out" 130 90)
+(let ((dpi 300))
+  (test-all "/tmp/draw-test.out" 130 90 dpi))
