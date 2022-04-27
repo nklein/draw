@@ -1,17 +1,13 @@
-(let ((path #P"./*.asd"))
-  (loop :for asd :in (directory path)
-     :when (ignore-errors (load asd))
-     :collect asd))
-
-
 (ql:quickload '(:draw :draw-pdf :draw-vecto :cl-pdf :vecto))
 
-
 (defun test ()
+  (let ((fonts '(#P"/Users/pat/Library/Fonts/NotoSans-Light.ttf")))
+    (dolist (font fonts)
+      (draw:load-ttf-font font)))
 
   (draw:set-rgb-fill 0.6 0.9 0.6)
   (draw:set-rgb-stroke 0.9 0.6 0.6)
-  (draw:set-line-width 1)
+  (draw:set-line-width 0.5)
 
   (draw:with-saved-state
     (draw:translate -40 40)
@@ -65,7 +61,11 @@
     (draw:close-fill-and-stroke)
     (draw:translate 60 0)
     (draw:rectangle 10 50 50 30 :radius 5)
-    (draw:close-fill-and-stroke)))
+    (draw:close-fill-and-stroke))
+
+  (draw:with-saved-state
+    (let ((font (draw:get-font "NotoSans-Light")))
+      (draw:set-font font 24))))
 
 (defun test-pdf (output-filename width height)
   (pdf:with-document ()
@@ -83,8 +83,7 @@
 
 (defun test-all (output-filename width height dpi)
   (flet ((file (ext)
-           (merge-pathnames (make-pathname :type ext)
-                            output-filename)))
+           (make-pathname :type ext :defaults output-filename)))
     (test-pdf (file "pdf") width height)
     (test-vecto (file "png") width height dpi)))
 

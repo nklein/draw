@@ -44,18 +44,19 @@ BACKEND STATUS
 | `close-fill-and-stroke` | ✓     | ✓     |       |
 | `close-path`            | ✓     | ✓     |       |
 | `draw-text`             |       |       |       |
-| `get-char-size`         |       |       |       |
+| `get-char-size`         | ✓     | ✓     |       |
 | `get-font`              |       |       |       |
 | `get-font-descender`    |       |       |       |
 | `get-kerning`           |       |       |       |
 | `in-text-mode`          |       |       |       |
 | `line-to`               | ✓     | ✓     |       |
+| `load-ttf-font`         | ✓     | ✓     |       |
 | `move-text`             |       |       |       |
 | `move-to`               | ✓     | ✓     |       |
 | `rectangle`             | ✓     | ✓     |       |
 | `rotate`                | ✓     | ✓     |       |
 | `scale`                 | ✓     | ✓     |       |
-| `set-font`              |       |       |       |
+| `set-font`              | ✓     | ✓     |       |
 | `set-line-width`        | ✓     | ✓     |       |
 | `set-rgb-fill`          | ✓     | ✓     |       |
 | `set-rgb-stroke`        | ✓     | ✓     |       |

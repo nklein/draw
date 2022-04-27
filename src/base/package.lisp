@@ -19,4 +19,8 @@
            :close-and-stroke
            :close-fill-and-stroke)
 
+  (:export :load-ttf-font
+           :get-font
+           :set-font)
+
   (:export :with-saved-state))
