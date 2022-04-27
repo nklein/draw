@@ -23,4 +23,11 @@
            :get-font
            :set-font)
 
+  (:export :not-in-text-mode-error
+           :not-in-text-mode-error-method
+           :not-in-text-mode-error-arguments
+           :in-text-mode
+           :draw-text
+           :move-text)
+
   (:export :with-saved-state))

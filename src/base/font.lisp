@@ -10,4 +10,5 @@
 
 (declaim (inline set-font))
 (defun set-font (font font-size)
+  (require-text-mode 'set-font font font-size)
   (%set-font (renderer) font font-size))

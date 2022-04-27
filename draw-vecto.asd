@@ -19,6 +19,8 @@
                                                  "renderer"))
                  (:file "paths" :depends-on ("package"
                                              "renderer"))
+                 (:file "text" :depends-on ("package"
+                                            "renderer"))
                  (:file "font" :depends-on ("package"
                                             "renderer"))
                  (:file "state" :depends-on ("package"

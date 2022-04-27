@@ -2,7 +2,9 @@
   (:use :cl)
 
   (:export :renderer
-           :with-renderer)
+           :with-renderer
+           :text-location
+           :set-text-location)
 
   (:export :%set-line-width
            :%set-rgb-stroke
@@ -25,5 +27,9 @@
   (:export :%load-ttf-font
            :%get-font
            :%set-font)
+
+  (:export :%in-text-mode
+           :%draw-text
+           :%move-text)
 
   (:export :%with-saved-state))

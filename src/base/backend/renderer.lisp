@@ -8,14 +8,15 @@
   "Provide read-access to *RENDERER*"
   *renderer*)
 
-(defmacro with-renderer ((&key) renderer &body body)
+(defmacro with-renderer ((&key &allow-other-keys) renderer &body body)
   "This macro binds the given RENDERER to be used while executing BODY."
   `(let ((*renderer* ,renderer))
      ,@body))
 
 (defclass renderer ()
   ((start-of-path :initform nil :accessor %start-of-path)
-   (location :initform nil :accessor %location))
+   (location :initform nil :accessor %location)
+   (text-location :initform nil :accessor %text-location))
   (:documentation "The RENDERER class forms the base class for all DRAW backends."))
 
 (defun set-start-of-path (renderer x y)
@@ -44,3 +45,17 @@
 
 (defun pop-location (renderer)
   (pop (%location renderer)))
+
+
+(defun set-text-location (renderer x y)
+  (setf (point-stack (%text-location renderer)) (cons x y)))
+
+(defun text-location (renderer)
+  (point-stack (%text-location renderer)))
+
+(defun push-text-location (renderer)
+  (multiple-value-bind (x y) (text-location renderer)
+    (push (cons x y) (%text-location renderer))))
+
+(defun pop-text-location (renderer)
+  (pop (%text-location renderer)))

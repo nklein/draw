@@ -6,8 +6,12 @@
              (format stream "Unable to find a font with handle ~A"
                      (font-not-found-error-handle condition)))))
 
-(defvar *font-loader-by-handle* (make-hash-table :test 'equal))
-(defvar *font-handle-by-pathname* (make-hash-table :test 'equal))
+(defvar *font-loader-by-handle* nil)
+(defvar *font-handle-by-pathname* nil)
+
+(defun clear-font-cache ()
+  (setf *font-loader-by-handle* (make-hash-table :test 'equal)
+        *font-handle-by-pathname* (make-hash-table :test 'equal)))
 
 (defun add-font-loader (handle pathname loader)
   (setf (gethash (namestring (truename pathname)) *font-handle-by-pathname*) handle
@@ -35,4 +39,6 @@
   (get-font-loader handle))
 
 (defmethod %set-font ((renderer vecto-renderer) font font-size)
+  (setf (font renderer) font
+        (font-size renderer) font-size)
   (vecto:set-font font font-size))

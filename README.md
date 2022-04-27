@@ -36,33 +36,33 @@ You can download the same image [rendered by the `CL-PDF` backend](./images/draw
 BACKEND STATUS
 --------------
 
-| Method                  | PDF   | Vecto | SVG   |
-|-------------------------| :---: | :---: | :---: |
-| `circle`                | ✓     | ✓     |       |
-| `close-and-fill`        | ✓     | ✓     |       |
-| `close-and-stroke`      | ✓     | ✓     |       |
-| `close-fill-and-stroke` | ✓     | ✓     |       |
-| `close-path`            | ✓     | ✓     |       |
-| `draw-text`             |       |       |       |
-| `get-char-size`         | ✓     | ✓     |       |
-| `get-font`              |       |       |       |
-| `get-font-descender`    |       |       |       |
-| `get-kerning`           |       |       |       |
-| `in-text-mode`          |       |       |       |
-| `line-to`               | ✓     | ✓     |       |
-| `load-ttf-font`         | ✓     | ✓     |       |
-| `move-text`             |       |       |       |
-| `move-to`               | ✓     | ✓     |       |
-| `rectangle`             | ✓     | ✓     |       |
-| `rotate`                | ✓     | ✓     |       |
-| `scale`                 | ✓     | ✓     |       |
-| `set-font`              | ✓     | ✓     |       |
-| `set-line-width`        | ✓     | ✓     |       |
-| `set-rgb-fill`          | ✓     | ✓     |       |
-| `set-rgb-stroke`        | ✓     | ✓     |       |
-| `translate`             | ✓     | ✓     |       |
-| `with-saved-state`      | ✓     | ✓     |       |
-| `write-document`        | †     |       |       |
+| Method                  | PDF   | Vecto |
+|-------------------------| :---: | :---: |
+| `circle`                | ✓     | ✓     |
+| `close-and-fill`        | ✓     | ✓     |
+| `close-and-stroke`      | ✓     | ✓     |
+| `close-fill-and-stroke` | ✓     | ✓     |
+| `close-path`            | ✓     | ✓     |
+| `draw-text`             | ✓     | ✓     |
+| `get-char-size`         |       |       |
+| `get-font`              | ✓     | ✓     |
+| `get-font-descender`    |       |       |
+| `get-kerning`           |       |       |
+| `in-text-mode`          | ✓     | ✓     |
+| `line-to`               | ✓     | ✓     |
+| `load-ttf-font`         | ✓     | ✓     |
+| `move-text`             | ✓     | ✓     |
+| `move-to`               | ✓     | ✓     |
+| `rectangle`             | ✓     | ✓     |
+| `rotate`                | ✓     | ✓     |
+| `scale`                 | ✓     | ✓     |
+| `set-font`              | ✓     | ✓     |
+| `set-line-width`        | ✓     | ✓     |
+| `set-rgb-fill`          | ✓     | ✓     |
+| `set-rgb-stroke`        | ✓     | ✓     |
+| `translate`             | ✓     | ✓     |
+| `with-saved-state`      | ✓     | ✓     |
+| `write-document`        | †     |       |
 
 † And, it turns out that without the `with-page` macro, there isn't
 a really useful way to implement `write-document` at a time when

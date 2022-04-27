@@ -14,5 +14,7 @@
                  (:file "style" :depends-on ("package"))
                  (:file "transform" :depends-on ("package"))
                  (:file "paths" :depends-on ("package"))
-                 (:file "font" :depends-on ("package"))
+                 (:file "text" :depends-on ("package"))
+                 (:file "font" :depends-on ("package"
+                                            "text"))
                  (:file "state" :depends-on ("package"))))))

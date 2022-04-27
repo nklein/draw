@@ -1,6 +1,6 @@
 (in-package #:draw-pdf)
 
-(defclass pdf-renderer ()
+(defclass pdf-renderer (renderer)
   ()
   (:documentation "The PDF-RENDERER class implements DRAW functionality using CL-PDF"))
 
