@@ -38,9 +38,9 @@
   (draw:line-to 10 10)
   (draw:close-path)
 
-  (draw:move-to 15 0)
-  (draw:line-to 15 10)
-  (draw:line-to 25 0)
+  (draw:move-to 12 0)
+  (draw:line-to 12 10)
+  (draw:line-to 22 0)
   (draw:close-path)
 
   (draw:close-and-stroke))
