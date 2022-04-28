@@ -1,11 +1,15 @@
 (in-package #:draw-vecto)
 
 (defclass vecto-renderer (renderer)
-  ((dpi :initarg :dpi :accessor %dpi)
+  ((dpi :initarg :dpi :reader %dpi)
+   (page-color :initarg :page-color :reader %page-color)
    (font :initform nil :accessor %font)
    (font-size :initform nil :accessor %font-size))
-  (:default-initargs :dpi 300)
+  (:default-initargs :dpi 300 :page-color '(1.0 1.0 1.0 1.0))
   (:documentation "The VECTO-RENDERER class implements DRAW functionality using VECTO"))
+
+(defmethod initialize-instance :before ((renderer vecto-renderer) &key &allow-other-keys)
+  t)
 
 (defun font (renderer)
   (first (%font renderer)))
@@ -42,20 +46,3 @@
 
 (defun pop-font-size (renderer)
   (pop (%font-size renderer)))
-
-
-(defmacro with-vecto-renderer ((&key (dpi 300)) &body body)
-  (declare (ignorable dpi))
-  (let ((dpi-var (gensym "DPI"))
-        (scale (gensym "SCALE")))
-    `(let ((,dpi-var ,dpi))
-       (assert (and (numberp ,dpi-var)
-                    (plusp ,dpi-var))
-               () "Must give the :DPI argument a number")
-       (let ((,scale (/ ,dpi-var 72)))
-         (with-renderer () (make-instance 'vecto-renderer :dpi ,dpi-var)
-           (vecto:with-graphics-state
-             (vecto:set-rgb-fill 1.0 1.0 1.0)
-             (vecto:clear-canvas)
-             (vecto:scale ,scale ,scale)
-             ,@body))))))

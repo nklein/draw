@@ -64,13 +64,7 @@ BACKEND STATUS
 | `with-document`         | ✓     | ✓     |
 | `with-page`             | ✓     | ✓     |
 | `with-saved-state`      | ✓     | ✓     |
-| `write-document`        | †     |       |
-
-† And, it turns out that without the `with-page` macro, there isn't
-a really useful way to implement `write-document` at a time when
-`CL-PDF` has written the page to the document but before it has
-discarded the document. So, I will have to think on that.
-
+| `write-document`        | ✓     | ✓     |
 
 
 PDF BACKEND
@@ -80,19 +74,82 @@ The `DRAW-PDF` backend exports the `PDF-RENDERER` class which can be used like:
 
     (draw:with-renderer (draw-pdf:pdf-renderer)
       (draw:load-ttf-font font-name handle)
-      (draw:with-document ()
-        (draw:with-page (:bounds (vector 0 0 width height))
+      (draw:with-document (:width width :height height)
+        (draw:with-page ()
           ...)
-        (pdf:write-document output-filename)))
+        (draw:write-document output-filename)))
+
+The PDF backend can take advantage of these keyword arguments passed to `WITH-DOCUMENT`:
+
+    :author string
+    :title string
+    :subject string
+    :keywords string
+
+Additionally, if you provide `WITH-DOCUMENT` both `WIDTH` and `HEIGHT`, then in the
+dynamic scope of the document, the default page size is `WIDTH` and `HEIGHT`.
+
+You can override the page boundary using the keyword `:BOUNDS` to the `WITH-PAGE` macro
+and giving it a vector. However, if you do this, you will lose compatibility with the
+`VECTO` backend which cannot change page sizes within a document. The most portable
+option is to use the `WIDTH` and `HEIGHT` keywords for `WITH-DOCUMENT`.
+
 
 VECTO BACKEND
 -------------
 
 The `DRAW-VECTO` backend exports the `VECTO-RENDERER` class which can be used like:
 
-    (draw:with-renderer (draw-vecto:vecto-renderer :dpi 150)
+    (draw:with-renderer (draw-vecto:vecto-renderer :dpi 150 :page-color '(1.0 1.0 1.0 1.0))
       (draw:load-ttf-font font-name handle)
       (draw:with-document (:width width :height height)
         (draw:with-page ()
           ...)
-        (vecto:save-png output-filename)))
+        (draw:save-png output-filename)))
+
+The `WITH-RENDERER` can take the following arguments:
+
+    :dpi number
+    :page-color list
+
+The `DPI` is the number of dots per inch. This specifies how many pixels there are in
+every inch (every 72-points) of document page.
+
+The `PAGE-COLOR` is a list of either three or four numbers between 0 and 1. They are
+used to set the background color for each page. If you wish the image to be transparent,
+you can specify a zero four the fourth element of that list.
+
+The Vecto backend can take advantage of these keyword arguments passed to `WITH-DOCUMENT`:
+
+    :width number
+    :height number
+
+The `WIDTH` and `HEIGHT` are expected to be in points. The `DPI` is used to determine
+the pixel width and height to use for the output image.
+
+
+MINIMUM DIFFERENCE
+------------------
+
+At the moment, if you wanted to render with either `CL-PDF` or `VECTO` you could write
+almost all of your document in one place something like this:
+
+    (defun common-parts (output-filename width height)
+      (draw:with-document (:width width :height height ...)
+        (draw:load-ttf-font #P"/some/dir/myfont.ttf" "myfont")
+        (draw:with-page ()
+          (draw:in-text-mode
+            (draw:set-font (draw:get-font "myfont"))
+            (draw:text "My Common Document"))
+          ...)
+        (draw:write-document output-filename)))
+
+Then, you can write short functions to render with `CL-PDF` or `VECTO`:
+
+    (defun render-with-draw-pdf (output-filename width height)
+      (draw:with-renderer (draw-pdf:pdf-renderer)
+        (common-parts output-filename width height)))
+
+    (defun render-with-draw-vecto (output-filename width height dpi)
+      (draw:with-renderer (draw-vecto:vecto-renderer :dpi dpi)
+        (common-parts output-filename width height)))

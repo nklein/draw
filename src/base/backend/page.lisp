@@ -15,3 +15,6 @@
                  (%location renderer) nil
                  (%text-location renderer) nil))
   (:documentation "This method invokes the given THUNK in a new page context made with the given ARGUMENTS."))
+
+(defgeneric %write-document (renderer output-filename)
+  (:documentation "This method saves the current document to the OUTPUT-FILENAME with the appropriate extension."))

@@ -4,7 +4,8 @@
   (:export :with-renderer)
 
   (:export :with-document
-           :with-page)
+           :with-page
+           :write-document)
 
   (:export :set-line-width
            :set-rgb-stroke
