@@ -18,9 +18,16 @@
                           :subject subject)
         (funcall thunk)))))
 
-(defmethod %with-page ((renderer pdf-renderer) arguments thunk)
+(defmethod %with-page ((renderer pdf-renderer) arguments thunk page-number)
   (destructuring-bind (&key (bounds pdf:*default-page-bounds*)
                        &allow-other-keys) arguments
+
+    ;; The PDF:WITH-PAGE will increment the page number, so we are
+    ;; setting it to one less than requested now.  The PDF:WITH-PAGE
+    ;; initialization does some checks after it increments the
+    ;; page-number so we are setting it now instead of inside the
+    ;; PDF:WITH-PAGE scope.
+    (setf pdf:*page-number* (1- page-number))
     (pdf:with-page (:bounds bounds)
       (funcall thunk))))
 

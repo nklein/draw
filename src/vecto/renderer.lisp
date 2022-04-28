@@ -5,11 +5,12 @@
    (page-color :initarg :page-color :reader %page-color)
    (font :initform nil :accessor %font)
    (font-size :initform nil :accessor %font-size))
-  (:default-initargs :dpi 300 :page-color '(1.0 1.0 1.0 1.0))
+  (:default-initargs :dpi 300
+                     :page-color '(1.0 1.0 1.0 1.0))
   (:documentation "The VECTO-RENDERER class implements DRAW functionality using VECTO"))
 
-(defmethod initialize-instance :before ((renderer vecto-renderer) &key &allow-other-keys)
-  t)
+(defmethod initialize-instance :after ((renderer vecto-renderer) &key &allow-other-keys)
+  (setf (%supports-multipage-documents renderer) nil))
 
 (defun font (renderer)
   (first (%font renderer)))

@@ -3,6 +3,9 @@
 (defvar *in-document-p* nil
   "Tracks if we are currently in a document.")
 
+(defvar *in-page-p* nil
+  "Tracks if we are currently in a page.")
+
 (defvar *page-number* nil
   "Track the current page number.")
 
@@ -22,9 +25,15 @@
     `(let ((,argv (list ,@arguments)))
        (require-with-document 'with-page ,argv)
        (forbid-nested-with-page 'with-page ,argv)
-       (let ((*page-number* (1+ *page-number*)))
+       (let ((*in-page-p* t))
          (%with-page *renderer* ,argv (lambda ()
-                                        ,@body))))))
+                                        ,@body)
+                     (incf *page-number*))))))
+
+(defun page-numbered-filename (output-filename &optional (digits 1))
+  (let* ((basename (pathname-name output-filename))
+         (numbered-name (format nil "~A~V,'0D" basename digits *page-number*)))
+    (make-pathname :name numbered-name :defaults output-filename)))
 
 (defun write-document (output-filename)
   "Saves the current document to the OUTPUT-FILENAME with the appropriate extension."

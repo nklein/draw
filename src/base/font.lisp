@@ -9,7 +9,7 @@
 (declaim (inline get-font))
 (defun get-font (handle)
   "Get the font given its HANDLE."
-  (require-with-page 'get-font handle)
+  (require-with-document 'get-font handle)
   (%get-font *renderer* handle))
 
 (declaim (inline set-font))

@@ -20,7 +20,8 @@
         (4 (apply #'vecto:set-rgba-fill page-color)))
       (vecto:clear-canvas))))
 
-(defmethod %with-page ((renderer vecto-renderer) arguments thunk)
+(defmethod %with-page ((renderer vecto-renderer) arguments thunk page-number)
+  (declare (ignore page-number))
   (destructuring-bind (&key &allow-other-keys) arguments
     (vecto:with-graphics-state
       (erase-page renderer)

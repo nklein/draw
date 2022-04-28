@@ -1,11 +1,14 @@
 (defpackage #:draw
   (:use :cl :draw-backend)
 
-  (:export :with-renderer)
+  (:export :with-renderer
+           :supports-multipage-documents)
 
   (:export :with-document
            :with-page
-           :write-document)
+           :write-document
+           :*page-number*
+           :page-numbered-filename)
 
   (:export :set-line-width
            :set-rgb-stroke

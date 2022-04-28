@@ -10,3 +10,7 @@
      (let ((*renderer* (make-instance ',renderer-class ,@arguments)))
        (check-type *renderer* renderer)
        ,@body)))
+
+(declaim (inline supports-multipage-documents))
+(defun supports-multipage-documents ()
+  (%supports-multipage-documents *renderer*))

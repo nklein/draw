@@ -3,7 +3,9 @@
 (defclass renderer ()
   ((start-of-path :initform nil :accessor %start-of-path)
    (location :initform nil :accessor %location)
-   (text-location :initform nil :accessor %text-location))
+   (text-location :initform nil :accessor %text-location)
+   (supports-multipage-documents :initform t
+                                 :accessor %supports-multipage-documents))
   (:documentation "The RENDERER class forms the base class for all DRAW backends."))
 
 (defun set-start-of-path (renderer x y)

@@ -31,7 +31,71 @@ Calling `write-document` for `Vecto` seems a bit odd.
 Below is a test image as rendered by the `Vecto` backend.
 You can download the same image [rendered by the `CL-PDF` backend](./images/draw-test.pdf).
 
-![sample image from Vecto](./images/draw-test.png)
+![sample image from Vecto (1 of 2)](./images/draw-test001.png)
+
+![sample image from Vecto (2 of 2)](./images/draw-test002.png)
+
+EXTENSIONS FROM CL-PDF
+----------------------
+
+The API of `DRAW` is based upon that of `CL-PDF` so that in many cases you will be able
+to simply swap `PDF:` (or `:PDF` in importing statements) with `DRAW:`
+(or `:DRAW` in importing statements).
+
+To facilitate compatibility between `CL-PDF` and `Vecto`, the `WITH-DOCUMENT` now takes
+a `:WIDTH` and `:HEIGHT` argument.
+
+Because `CL-PDF` supports multi-page documents and `Vecto` does not, you may like to
+write files out between each page when using the `Vecto` backend and write out
+the document at the end only when using the `CL-PDF` backend.
+To support this, `DRAW` provides the functions `SUPPORTS-MULTIPAGE-DOCUMENTS`
+and `PAGE-NUMBERED-FILENAME`.
+
+    (supports-multipage-documents) => t or nil
+    (page-numbered-filename base-filename &optional (digits 1)) => filename-with-zero-padded-pagenumber
+
+For example:
+
+    (setf draw:*page-number* 37)
+    (page-numbered-filename #P"/tmp/draw.out") => #P"/tmp/draw37.out"
+    (page-numbered-filename #P"/tmp/draw.out" 4) => #P"/tmp/draw0037.out"
+
+If you were generating a bunch of pages you might call `WRITE-DOCUMENT`
+after each `WITH-PAGE` giving it the `PAGE-NUMBERED-FILENAME` of your base output filename
+when `SUPPORTS-MULTIPAGE-DOCUMENTS` returns `NIL`. And you would call
+`WRITE-DOCUMENT` with your output filename when `SUPPORTS-MULTIPAGE-DOCUMENTS`
+returns non-`NIL`. Something like:
+
+    (with-document (:width width :height height)
+      (with-page () ...render.page.1...)
+      (unless (supports-multipage-documents)
+        (write-document (page-numbered-filename output-filename))))
+
+      (with-page () ...render.page.2...)
+      (unless (supports-multipage-documents)
+        (write-document (page-numbered-filename output-filename))))
+      ...
+
+      (when (supports-multipage-documents)
+          (write-document output-filename)))
+
+To help ensure one doesn't construct things that will render differently with
+different backends, errors are raised if you try to piece things together in unexpected ways like:
+
+* Use `WITH-RENDERER` inside another `WITH-RENDERER` scope,
+* Use `WITH-DOCUMENT` inside another `WITH-DOCUMENT` scope,
+* Use `WITH-PAGE` inside another `WITH-PAGE` scope,
+* Use `WRITE-DOCUMENT` outside of a `WITH-DOCUMENT` scope,
+* Perform `WITH-DOCUMENT` outside of a `WITH-RENDERER` scope,
+* Perform `WITH-PAGE` outside of a `WITH-DOCUMENT` scope,
+* Perform `LOAD-TTF-FONT` or `GET-FONT` outside of a `WITH-DOCUMENT` scope,
+* Perform drawing or transform operations outside of a `WITH-PAGE` scope, and
+* Perform do font and text operations (except `LOAD-TTF-FONT` and `GET-FONT`) outside of an `IN-TEXT-MODE` scope.
+
+Currently, `DRAW` will let you do transformations like `TRANSLATE`, `ROTATE`, and `SCALE` in the middle
+of creating a path. This results in undefined behavior and the PDF and Vecto backends differ on how
+that is handled. In a future release, doing such things after starting a path but before closing it
+may raise an error, as well.
 
 BACKEND STATUS
 --------------

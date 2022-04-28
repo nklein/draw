@@ -3,7 +3,7 @@
 (declaim (inline set-line-width))
 (defun set-line-width (width)
   "Set the line width to WIDTH points."
-  (require-with-page 'set-line-width width)
+  (require-with-document 'set-line-width width)
   (%set-line-width *renderer* width))
 
 (declaim (inline set-rgb-stroke))

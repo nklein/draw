@@ -2,6 +2,7 @@
   (:use :cl)
 
   (:export :renderer
+           :%supports-multipage-documents
            :text-location
            :set-text-location)
 

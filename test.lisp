@@ -105,7 +105,18 @@
       (draw:with-saved-state
         (draw:translate 50 35)
         (test-text)))
-    (draw:write-document output-filename)))
+    (unless (draw:supports-multipage-documents)
+      (draw:write-document (draw:page-numbered-filename output-filename 3)))
+
+    (draw:with-page ()
+      (draw:with-saved-state
+        (draw:translate 50 35)
+        (test-text)))
+    (unless (draw:supports-multipage-documents)
+      (draw:write-document (draw:page-numbered-filename output-filename 3)))
+
+    (when (draw:supports-multipage-documents)
+      (draw:write-document output-filename))))
 
 (defun test-pdf (output-filename width height)
   (draw:with-renderer (draw-pdf:pdf-renderer)
@@ -126,8 +137,9 @@
 
 (defun validate ()
   (ignore-errors (delete-file #P"/tmp/draw-test.pdf"))
-  (ignore-errors (delete-file #P"/tmp/draw-test.png"))
-  (ignore-errors (delete-file #P"/tmp/draw-test.pdf.srubbed"))
+  (ignore-errors (delete-file #P"/tmp/draw-test001.png"))
+  (ignore-errors (delete-file #P"/tmp/draw-test002.png"))
+  (ignore-errors (delete-file #P"/tmp/scrubbed-draw-test.pdf"))
 
   (make-images)
 
@@ -135,12 +147,15 @@
   ;; to still have the same checksum we did last time.
   (external-program:run "sed" '("-e" "/^\\/CreationDate (D:[0-9]*)/d")
                         :input #P"/tmp/draw-test.pdf"
-                        :output #P"/tmp/draw-test.pdf.scrubbed"
+                        :output #P"/tmp/scrubbed-draw-test.pdf"
                         :if-output-exists :supersede)
 
-  (assert (equalp (md5:md5sum-file #P"/tmp/draw-test.pdf.scrubbed")
-                  (vector 67 64 145 80 135 58 151 29 156 76 226 62 154 217 127 108)))
-  (assert (equalp (md5:md5sum-file #P"/tmp/draw-test.png")
-                  (vector 122 145 188 193 17 90 2 13 153 54 249 195 238 255 96 217))))
+  (assert (equalp (md5:md5sum-file #P"/tmp/scrubbed-draw-test.pdf")
+                  (vector 14 202 175 235 235 83 151 209 204 79 177 173 191 110 25 13)))
+  (assert (equalp (md5:md5sum-file #P"/tmp/draw-test001.png")
+                  (vector 122 145 188 193 17 90 2 13 153 54 249 195 238 255 96 217)))
+  (assert (equalp (md5:md5sum-file #P"/tmp/draw-test002.png")
+                  (vector 171 52 8 240 248 75 229 22 56 184 161 243 75 129 124 58))))
+
 
 (validate)

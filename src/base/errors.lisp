@@ -69,13 +69,11 @@
     (error 'not-with-document-error :method method :arguments arguments)))
 
 (defun forbid-nested-with-page (method &rest arguments)
-  (when (and *page-number*
-             (plusp *page-number*))
+  (when *in-page-p*
     (error 'nested-with-page-error :method method :arguments arguments :page-number *page-number*)))
 
 (defun require-with-page (method &rest arguments)
-  (unless (and *page-number*
-               (plusp *page-number*))
+  (unless *in-page-p*
     (error 'not-with-page-error :method method :arguments arguments)))
 
 
