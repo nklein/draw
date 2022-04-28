@@ -1,6 +1,11 @@
 (defpackage #:draw
   (:use :cl :draw-backend)
 
+  (:export :with-renderer)
+
+  (:export :with-document
+           :with-page)
+
   (:export :set-line-width
            :set-rgb-stroke
            :set-rgb-fill)

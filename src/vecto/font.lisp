@@ -25,15 +25,16 @@
   (or (gethash (string-downcase handle) *font-loader-by-handle*)
       (error 'font-not-found-error :handle handle)))
 
-(defun preload-ttf-font (font-pathname)
+(defun preload-ttf-font (font-pathname handle)
   (or (get-handle font-pathname)
       (let ((loader (zpb-ttf:open-font-loader font-pathname)))
         (when loader
-          (let ((handle (string-downcase (zpb-ttf:postscript-name loader))))
+          (let ((handle (string-downcase (or handle
+                                             (zpb-ttf:postscript-name loader)))))
             (add-font-loader handle font-pathname loader))))))
 
-(defmethod %load-ttf-font ((renderer vecto-renderer) font-pathname)
-  (preload-ttf-font font-pathname))
+(defmethod %load-ttf-font ((renderer vecto-renderer) font-pathname handle)
+  (preload-ttf-font font-pathname handle))
 
 (defmethod %get-font ((renderer vecto-renderer) handle)
   (get-font-loader handle))

@@ -3,10 +3,11 @@
 (asdf:defsystem #:draw-vecto
   :description "Backend using Vecto for DRAW."
   :author "Patrick Stein <pat@nklein.com>"
-  :version "0.1.20220426"
+  :version "0.1.20220427"
   :license "UNLICENSE"
-  :depends-on ((:version #:draw-backend "0.1.20220426")
-               #:vecto)
+  :depends-on ((:version #:draw-backend "0.1.20220427")
+               #:vecto
+               #:zpb-ttf)
   :components
   ((:static-file "README.md")
    (:static-file "UNLICENSE.txt")
@@ -24,4 +25,6 @@
                  (:file "font" :depends-on ("package"
                                             "renderer"))
                  (:file "state" :depends-on ("package"
-                                             "renderer"))))))
+                                             "renderer"))
+                 (:file "page" :depends-on ("package"
+                                            "renderer"))))))

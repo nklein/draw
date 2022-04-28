@@ -2,9 +2,11 @@
   (:use :cl)
 
   (:export :renderer
-           :with-renderer
            :text-location
            :set-text-location)
+
+  (:export :%with-document
+           :%with-page)
 
   (:export :%set-line-width
            :%set-rgb-stroke

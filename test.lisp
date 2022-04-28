@@ -1,7 +1,5 @@
 (ql:quickload '(:draw :draw-pdf :draw-vecto :cl-pdf :vecto))
 
-(zpb-ttf:bounding-box)
-
 (defun preload-fonts ()
   (let ((fonts '(#P"/Users/pat/Library/Fonts/NotoSans-Light.ttf")))
     (dolist (font fonts)
@@ -102,24 +100,20 @@
 
   (draw:with-saved-state
     (draw:translate 50 35)
-    (test-text))
-
-  (draw:with-saved-state
-    (draw:translate 5 5)
-    (test-segments)))
+    (test-text)))
 
 (defun test-pdf (output-filename width height)
-  (pdf:with-document ()
-    (pdf:with-page (:bounds (vector 0 0 width height))
-      (draw-pdf:with-pdf-renderer ()
-        (test)))
-    (pdf:write-document output-filename)))
+  (draw:with-renderer (draw-pdf:pdf-renderer)
+    (draw:with-document ()
+      (draw:with-page (:bounds (vector 0 0 width height))
+        (test))
+      (pdf:write-document output-filename))))
 
 (defun test-vecto (output-filename width height dpi)
-  (vecto:clear-font-cache)
-  (let ((scale (/ dpi 72)))
-    (vecto:with-canvas (:width (round (* scale width)) :height (round (* scale height)))
-      (draw-vecto:with-vecto-renderer (:dpi dpi)
+  (draw:with-renderer (draw-vecto:vecto-renderer :dpi dpi)
+    (draw-vecto:clear-font-cache)
+    (draw:with-document (:width width :height height)
+      (draw:with-page ()
         (test))
       (vecto:save-png output-filename))))
 

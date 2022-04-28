@@ -1,18 +1,5 @@
 (in-package #:draw-backend)
 
-(defvar *renderer* nil
-  "The DRAW/BACKEND:RENDERER to use for all operations")
-
-(declaim (inline renderer))
-(defun renderer ()
-  "Provide read-access to *RENDERER*"
-  *renderer*)
-
-(defmacro with-renderer ((&key &allow-other-keys) renderer &body body)
-  "This macro binds the given RENDERER to be used while executing BODY."
-  `(let ((*renderer* ,renderer))
-     ,@body))
-
 (defclass renderer ()
   ((start-of-path :initform nil :accessor %start-of-path)
    (location :initform nil :accessor %location)

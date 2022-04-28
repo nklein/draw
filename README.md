@@ -61,6 +61,8 @@ BACKEND STATUS
 | `set-rgb-fill`          | ✓     | ✓     |
 | `set-rgb-stroke`        | ✓     | ✓     |
 | `translate`             | ✓     | ✓     |
+| `with-document`         | ✓     | ✓     |
+| `with-page`             | ✓     | ✓     |
 | `with-saved-state`      | ✓     | ✓     |
 | `write-document`        | †     |       |
 
@@ -74,32 +76,23 @@ discarded the document. So, I will have to think on that.
 PDF BACKEND
 -----------
 
-The `DRAW-PDF` backend exports this macro:
+The `DRAW-PDF` backend exports the `PDF-RENDERER` class which can be used like:
 
-    (with-pdf-renderer (&key &allow-other-keys)
-       ...)
-
-One might use it like this, at the moment:
-
-    (pdf:with-document ()
-      (pdf:with-page (:bounds (vector 0 0 (* 4 72) (* 4 72)))
-        (draw-pdf:with-pdf-renderer ()
-          (test)))
-      (pdf:write-document output-filename))
+    (draw:with-renderer (draw-pdf:pdf-renderer)
+      (draw:load-ttf-font font-name handle)
+      (draw:with-document ()
+        (draw:with-page (:bounds (vector 0 0 width height))
+          ...)
+        (pdf:write-document output-filename)))
 
 VECTO BACKEND
 -------------
 
-The `DRAW-VECTO` backend exports this macro:
+The `DRAW-VECTO` backend exports the `VECTO-RENDERER` class which can be used like:
 
-    (with-vecto-renderer (&key (dpi 300) &allow-other-keys)
-       ...)
-
-One might use it like this, at the moment:
-
-    (let* ((dpi 300)
-           (scale (/ dpi 72)))
-      (vecto:with-canvas (:width (round (* scale width)) :height (round (* scale height)))
-        (draw-vecto:with-vecto-renderer (:dpi dpi)
-          (test))
+    (draw:with-renderer (draw-vecto:vecto-renderer :dpi 150)
+      (draw:load-ttf-font font-name handle)
+      (draw:with-document (:width width :height height)
+        (draw:with-page ()
+          ...)
         (vecto:save-png output-filename)))

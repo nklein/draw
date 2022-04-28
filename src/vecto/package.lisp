@@ -1,6 +1,6 @@
 (defpackage #:draw-vecto
   (:use :cl :draw-backend)
 
-  (:export :with-vecto-renderer)
+  (:export :vecto-renderer)
 
   (:export :clear-font-cache))

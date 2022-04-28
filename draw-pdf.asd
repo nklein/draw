@@ -3,9 +3,9 @@
 (asdf:defsystem #:draw-pdf
   :description "Backend using CL-PDF for DRAW."
   :author "Patrick Stein <pat@nklein.com>"
-  :version "0.1.20220426"
+  :version "0.1.20220427"
   :license "UNLICENSE"
-  :depends-on ((:version #:draw-backend "0.1.20220426")
+  :depends-on ((:version #:draw-backend "0.1.20220427")
                #:cl-pdf)
   :components
   ((:static-file "README.md")
@@ -24,4 +24,6 @@
                  (:file "text" :depends-on ("package"
                                             "renderer"))
                  (:file "state" :depends-on ("package"
-                                             "renderer"))))))
+                                             "renderer"))
+                 (:file "page" :depends-on ("package"
+                                            "renderer"))))))
