@@ -1,4 +1,4 @@
-(ql:quickload '(:draw :draw-pdf :draw-vecto :cl-pdf :vecto))
+(ql:quickload '(:draw :draw-pdf :draw-vecto :cl-pdf :vecto :md5 :external-program))
 
 (defun preload-fonts ()
   (let ((fonts '(#P"/Users/pat/Library/Fonts/NotoSans-Light.ttf")))
@@ -121,5 +121,26 @@
   (test-pdf output-filename width height)
   (test-vecto output-filename width height dpi))
 
-(let ((dpi 200))
-  (test-all "/tmp/draw-test.out" 130 90 dpi))
+(defun make-images ()
+  (test-all #P"/tmp/draw-test.out" 130 90 200))
+
+(defun validate ()
+  (ignore-errors (delete-file #P"/tmp/draw-test.pdf"))
+  (ignore-errors (delete-file #P"/tmp/draw-test.png"))
+  (ignore-errors (delete-file #P"/tmp/draw-test.pdf.srubbed"))
+
+  (make-images)
+
+  ;; We need to scrub out the creation date in the PDF if we hope
+  ;; to still have the same checksum we did last time.
+  (external-program:run "sed" '("-e" "/^\\/CreationDate (D:[0-9]*)/d")
+                        :input #P"/tmp/draw-test.pdf"
+                        :output #P"/tmp/draw-test.pdf.scrubbed"
+                        :if-output-exists :supersede)
+
+  (assert (equalp (md5:md5sum-file #P"/tmp/draw-test.pdf.scrubbed")
+                  (vector 67 64 145 80 135 58 151 29 156 76 226 62 154 217 127 108)))
+  (assert (equalp (md5:md5sum-file #P"/tmp/draw-test.png")
+                  (vector 122 145 188 193 17 90 2 13 153 54 249 195 238 255 96 217))))
+
+(validate)
