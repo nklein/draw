@@ -51,7 +51,6 @@
                     (plusp ,dpi-var))
                () "Must give the :DPI argument a number")
        (let ((,scale (/ ,dpi-var 72)))
-         (clear-font-cache)
          (with-renderer () (make-instance 'vecto-renderer)
            (vecto:with-graphics-state
              (vecto:set-rgb-fill 1.0 1.0 1.0)
