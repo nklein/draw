@@ -1,9 +1,32 @@
 (ql:quickload '(:draw :draw-pdf :draw-vecto :cl-pdf :vecto :md5 :external-program))
 
+(defvar *font-directory* #P"/Users/pat/Library/Fonts/")
+
+(defun font-path (filename)
+  (merge-pathnames filename *font-directory*))
+
 (defun preload-fonts ()
-  (let ((fonts '(#P"/Users/pat/Library/Fonts/NotoSans-Light.ttf")))
+  ;; NotoSans: https://fonts.google.com/noto/specimen/Noto+Sans
+  ;; WaterBrush: https://fonts.google.com/noto/specimen/Water+Brush
+  ;; Figaro: https://wfonts.com/font/figaro
+  (let ((fonts '(#P"NotoSans-Light.ttf"
+                 #P"WaterBrush-Regular.ttf"
+                 #P"FIGARO.TTF")))
     (dolist (font fonts)
-      (draw:load-ttf-font font))))
+      (draw:load-ttf-font (font-path font)))))
+
+
+(defun print-font-debug-info ()
+  (let ((font (draw:get-font "FIGARO")))
+    (draw:with-saved-state
+      (draw:in-text-mode
+        (draw:set-font font 10)
+        (format *debug-io* "(get-font-descender) => ~A~%"
+                (draw:get-font-descender font 10))
+        (multiple-value-bind (w a d) (draw:get-char-size #\Q font 10)
+          (format *debug-io* "(get-char-size #\\Q) => (values ~A ~A ~A)~%" w a d))
+        (format *debug-io* "(get-kerning #\\L #\\!) => ~A~%"
+                (draw:get-kerning #\L #\! font 10))))))
 
 (defun test-rotation-translation-fill-and-stroke ()
   (draw:rotate (- 90 56))
@@ -42,7 +65,7 @@
 
   (draw:close-and-stroke))
 
-(defun test-text ()
+(defun test-text (font-name &optional (text "Text"))
   (draw:with-saved-state
     (draw:set-line-width 0.25)
     (draw:set-rgb-stroke 0.5 0.5 0.8)
@@ -52,10 +75,10 @@
     (draw:close-and-stroke))
 
   (draw:in-text-mode
-    (let ((font (draw:get-font "NotoSans-Light")))
+    (let ((font (draw:get-font font-name)))
       (draw:set-rgb-fill 0.2 0.2 0.2)
       (draw:set-font font 10)
-      (draw:draw-text "Text")
+      (draw:draw-text text)
       (draw:with-saved-state
         (draw:set-font font 3)
         (draw:set-rgb-fill 0.6 0.2 0.2)
@@ -89,6 +112,9 @@
       (draw:set-rgb-stroke 0.9 0.6 0.6)
       (draw:set-line-width 0.5)
 
+      #-not
+      (print-font-debug-info)
+
       (draw:with-saved-state
         (test-rotation-translation-fill-and-stroke))
 
@@ -104,14 +130,16 @@
 
       (draw:with-saved-state
         (draw:translate 50 35)
-        (test-text)))
+        (test-text "NotoSans-Light")))
     (unless (draw:supports-multipage-documents)
       (draw:write-document (draw:page-numbered-filename output-filename 3)))
 
     (draw:with-page ()
       (draw:with-saved-state
         (draw:translate 50 35)
-        (test-text)))
+        (test-text "WaterBrush-Regular")
+        (draw:translate -40 20)
+        (test-text "FIGARO" "L!P,AYAVA")))
     (unless (draw:supports-multipage-documents)
       (draw:write-document (draw:page-numbered-filename output-filename 3)))
 
@@ -119,10 +147,12 @@
       (draw:write-document output-filename))))
 
 (defun test-pdf (output-filename width height)
+  (format *debug-io* "===== pdf~%")
   (draw:with-renderer (draw-pdf:pdf-renderer)
     (test output-filename width height)))
 
 (defun test-vecto (output-filename width height dpi)
+  (format *debug-io* "===== vecto~%")
   (draw:with-renderer (draw-vecto:vecto-renderer :dpi dpi
                                                  :page-color-not '(1.0 1.0 1.0 1.0))
     (draw-vecto:clear-font-cache)
@@ -151,11 +181,12 @@
                         :if-output-exists :supersede)
 
   (assert (equalp (md5:md5sum-file #P"/tmp/scrubbed-draw-test.pdf")
-                  (vector 14 202 175 235 235 83 151 209 204 79 177 173 191 110 25 13)))
+                  (vector 228 236 159 140 206 226 33 22 135 94 36 50 101 249 115 88)))
   (assert (equalp (md5:md5sum-file #P"/tmp/draw-test001.png")
-                  (vector 122 145 188 193 17 90 2 13 153 54 249 195 238 255 96 217)))
+                  (vector 187 65 22 249 131 160 203 38 171 232 178 173 130 193 209 236)))
   (assert (equalp (md5:md5sum-file #P"/tmp/draw-test002.png")
-                  (vector 171 52 8 240 248 75 229 22 56 184 161 243 75 129 124 58))))
+                  (vector 240 125 2 18 87 239 10 226 226 224 130 36 244 173 195 198)))
 
+  t)
 
-(validate)
+(make-images)

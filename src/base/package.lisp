@@ -30,7 +30,10 @@
 
   (:export :load-ttf-font
            :get-font
-           :set-font)
+           :set-font
+           :get-char-size
+           :get-font-descender
+           :get-kerning)
 
   (:export :not-in-text-mode-error
            :not-in-text-mode-error-method

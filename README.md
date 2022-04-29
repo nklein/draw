@@ -35,6 +35,41 @@ You can download the same image [rendered by the `CL-PDF` backend](./images/draw
 
 ![sample image from Vecto (2 of 2)](./images/draw-test002.png)
 
+INCOMPATIBILITIES
+-----------------
+
+This section outlines the known difference in output between the PDF backend
+and the Vecto backend beyond the fact that the PDF backend outputs multi-page
+_vector_ graphics and Vecto outputs one _raster_ graphic per page.
+
+### Kerning
+
+When you load a True-Type Font into `CL-PDF`, it usually (always?) embeds the
+font into the PDF.
+
+I am not sure if there is something off in the way that:
+* PDF renderers use this embeded font,
+* `CL-PDF` puts the font into the PDF, or
+* `CL-PDF` uses PDF operators to render text strings.
+
+The PDF document (or maybe just any of the PDF renders on my laptop)
+does not take advantage of the kerning information in the font.
+
+This can be seen in the second page of sample images above.
+The odd text there was chosen to hit some of the most dramatic kerning shifts.
+If you compare the PDF version with the Vecto version, you will see that the
+Vecto version has used the kerning information to allow it to slide some
+characters closer together.
+
+(I disagree with the font's choice to kern the exclamation point so
+close to the capital L, but that's what the font says and that's how
+it looks like when I use the font in an image editor.)
+
+There is no mechanism with which to tell `Vecto` not to use kerning.
+I mean, why wouldn't one use it? My best guess is an Adobe vendetta
+against free fonts. I dunno.
+
+
 EXTENSIONS FROM CL-PDF
 ----------------------
 
@@ -108,10 +143,10 @@ BACKEND STATUS
 | `close-fill-and-stroke` | ✓     | ✓     |
 | `close-path`            | ✓     | ✓     |
 | `draw-text`             | ✓     | ✓     |
-| `get-char-size`         |       |       |
+| `get-char-size`         | ✓     | ✓     |
 | `get-font`              | ✓     | ✓     |
-| `get-font-descender`    |       |       |
-| `get-kerning`           |       |       |
+| `get-font-descender`    | ✓     | ✓     |
+| `get-kerning`           | ✓     | ✓     |
 | `in-text-mode`          | ✓     | ✓     |
 | `line-to`               | ✓     | ✓     |
 | `load-ttf-font`         | ✓     | ✓     |
@@ -192,8 +227,8 @@ The `WIDTH` and `HEIGHT` are expected to be in points. The `DPI` is used to dete
 the pixel width and height to use for the output image.
 
 
-MINIMUM DIFFERENCE
-------------------
+MAXIMIZING COMMON CODE FOR YOUR DRAWING
+---------------------------------------
 
 At the moment, if you wanted to render with either `CL-PDF` or `VECTO` you could write
 almost all of your document in one place something like this:

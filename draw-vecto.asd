@@ -3,9 +3,9 @@
 (asdf:defsystem #:draw-vecto
   :description "Backend using Vecto for DRAW."
   :author "Patrick Stein <pat@nklein.com>"
-  :version "0.1.20220427"
+  :version "0.1.20220428"
   :license "UNLICENSE"
-  :depends-on ((:version #:draw-backend "0.1.20220427")
+  :depends-on ((:version #:draw-backend "0.1.20220428")
                #:vecto
                #:zpb-ttf)
   :components

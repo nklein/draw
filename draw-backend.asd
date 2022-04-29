@@ -3,7 +3,7 @@
 (asdf:defsystem #:draw-backend
   :description "Common interface to both CL-PDF and Vecto"
   :author "Patrick Stein <pat@nklein.com>"
-  :version "0.1.20220427"
+  :version "0.1.20220428"
   :license "UNLICENSE"
   :depends-on ()
   :components
