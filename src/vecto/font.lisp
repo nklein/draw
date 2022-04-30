@@ -13,6 +13,8 @@
   (setf *font-loader-by-handle* (make-hash-table :test 'equal)
         *font-handle-by-pathname* (make-hash-table :test 'equal)))
 
+(clear-font-cache)
+
 (defun add-font-loader (handle pathname loader)
   (setf (gethash (namestring (truename pathname)) *font-handle-by-pathname*) handle
         (gethash handle *font-loader-by-handle*) loader)

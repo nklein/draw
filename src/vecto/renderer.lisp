@@ -22,7 +22,7 @@
         (push new-font (%font renderer)))))
 
 (defun push-font (renderer)
-  (let ((cur (%font renderer)))
+  (let ((cur (font renderer)))
     (when cur
       (push cur (%font renderer)))))
 
@@ -41,7 +41,7 @@
         (push new-font-size (%font-size renderer)))))
 
 (defun push-font-size (renderer)
-  (let ((cur (%font-size renderer)))
+  (let ((cur (font-size renderer)))
     (when cur
       (push cur (%font-size renderer)))))
 
