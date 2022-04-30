@@ -1,5 +1,5 @@
-DRAW
-====
+DRAW v0.2.20220430
+==================
 
 I started work on a package to create [Sudoku diagrams](https://github.com/nklein/sudoku-diagrams).
 I know that sometimes I want them in a printable version and other times I want them
